@@ -8,6 +8,9 @@ import { authRouter, brandRouter, cartRouter, categoryRouter, couponRouter, orde
     //routing
     app.use('/category',categoryRouter)
     app.use('/uploads',express.static('uploads'))
+    app.use('*',(req,res,next)=>{
+        return res.json({message:"invalid url"})
+    })
     app.use('/subcategory',subcategoryRouter)
     app.use('/brand',brandRouter)
     app.use('/product',productRouter)
