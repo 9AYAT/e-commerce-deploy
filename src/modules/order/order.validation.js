@@ -1,6 +1,5 @@
 import joi from 'joi'
 import { paymentMethod } from '../../utils/constant/enum.js'
-import { generalFields } from '../../middleware/validation'
 export const createOrderVal=joi.object({
         phone:joi.string(),
         street:joi.string(),
