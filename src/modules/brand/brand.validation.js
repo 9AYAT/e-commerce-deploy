@@ -8,3 +8,6 @@ export const updatebrandVal=joi.object({
     name:generalFields.name,
     brandId:generalFields.objectId.required()
 })
+export const deletebrandVal=joi.object({
+    brandId:generalFields.objectId.required()
+})

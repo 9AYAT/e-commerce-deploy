@@ -11,9 +11,7 @@ export const addBrand=async(req,res,next)=>{
     //check exist
     const brandExist=await Brand.findOne({name})
     if(brandExist){
-        return next (new AppError(messages.brand.alreadyExist))
-        
-    }
+        return next (new AppError(messages.brand.alreadyExist)) }
     //upload image
     const {secure_url,public_id} =await cloudinary.uploader.upload(req.file.path,
        { folder:'hti/brand'}
@@ -24,8 +22,6 @@ export const addBrand=async(req,res,next)=>{
         ,slug
         ,logo:{secure_url,public_id},
     createdBy:req.authUser._id})
-//createdby: token
-
 //add to db
 const createdBrand=await brand.save()
 if(!createdBrand){
@@ -77,7 +73,6 @@ export const updateBrand=async(req,res,next)=>{
  //update
  const updatedBrand=await brandExist.save()
  if(!updatedBrand){
-   
     return next(new AppError(messages.brand.failToUpdate))}
     //send res
     return res.status(200).json({message:messages.brand.updatedsuccessfully
@@ -86,4 +81,20 @@ export const updateBrand=async(req,res,next)=>{
     })
 }
 //getbrand-getsecific all 2api
+export const getAllBrands=async(req,res,next)=>{
+    const brands=await Brand.find()
+    return res.status(201).json({status:true,data:brands})
+   }
 //deletebrand  
+export const deleteBrand=async(req,res,next)=>{
+    const{brandId}=req.params
+    const deletedBrand = await Brand.findByIdAndDelete(brandId);
+  if (!deletedBrand) {
+    return next(new AppError(messages.brand.notfound, 404));
+  }
+
+  return res.status(200).json({
+    message: messages.brand.delettedsuccessfully,
+    brand: deletedBrand,
+  });
+}

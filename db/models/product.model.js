@@ -56,7 +56,6 @@ min:0
   //
   createdBy:{type:Schema.Types.ObjectId,ref:'User',required:true},//todo
   updatedBy:{type:Schema.Types.ObjectId,ref:'User',required:true}//todo
-
 ,
 rate:{
     type:Number,
@@ -69,12 +68,12 @@ productSchema.methods.inStock=function(quantity){
     return this.stock<quantity ?false:true
 }
 productSchema.virtual('finalPrice').get(function(){
-    if(this.discountType==discountTypes.FIXED_AMOUNT){
-        return this.price=this.discount;
-    }
-    else{
+    //if(this.discountType==discountTypes.FIXED_AMOUNT){
+       // return this.price=this.discount; }
+  //  else{
          //p
-         return this.price-(this.price*(this.discount||0)) / 100
-    }
+         return this.price - (this.price*((this.discount||0) / 100))
+    //}
+
 })
 export const Product=model('Product',productSchema)

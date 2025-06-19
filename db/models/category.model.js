@@ -14,13 +14,14 @@ const categorySchema=new Schema({
         trim:true
     },
     image:{
-        type:Object//path
-        ,required:true
+        //type:Object//path
+        secure_url:{type:String,required:false},
+        public_id:{type:String,required:false}
     },
     createdBy:{
         type:Schema.Types.ObjectId,
         ref:"User",//todo 
-         required:true
+         required:false
     }
 },{timestamps:true,toJSON:{virtuals:true}})
 categorySchema.virtual('subcategories',{

@@ -16,15 +16,14 @@ slug:{
     lowercase:true,
     trim:true
 },
-image:{type:Object
-,required:true
-},
-
-
+image:{
+        secure_url:{type:String,required:false},
+        public_id:{type:String,required:false}
+    },
 createdBy:{
     type:Schema.Types.ObjectId,
     ref:"User",
-    required:true
+    required:false
 },
 category:{
     type:Schema.Types.ObjectId,

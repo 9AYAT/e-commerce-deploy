@@ -1,22 +1,23 @@
 import slugify from 'slugify'//db index
-import { Category } from '../../../db/index.js'
-//import { Category } from "../../../db/models/category.model.js"
+//import { Category } from '../../../db/index.js'
 import { AppError } from "../../utils/appError.js"
 import { messages } from "../../utils/constant/message.js"
 import { deleteFile } from '../../utils/file.js'
 import cloudinary from '../../utils/cloud.js'
-//add cate
+import { Category } from '../../../db/index.js'
+//add category
 export const addCategory=async(req,res,next)=>{
    //get data from req
     let{name}=req.body
- name=name.toLowerCase()
- //check exist
- const categoryExist=await Category.findOne({name})
- if(categoryExist){
-    return next(new AppError(messages.category.alreadyExist,400))
+    name=name.toLowerCase()
+   //check exist
+   const categoryExist=await Category.findOne({name})
+   if(categoryExist){
+      return next(new AppError(messages.category.alreadyExist,400))
  }
  //upload image
- const{secure_url,public_id}=await cloudinary.uploader.upload(req.file.path,{folder:'hti/category'})
+ const{secure_url,public_id}=await cloudinary.uploader.upload(req.file.path,
+   {folder:'hti/category'})
  //prepare data npm i slugify
  const slug=slugify(name)//h&m =h-and-m
  const category=new Category({
@@ -53,7 +54,7 @@ export const updateCategory=async(req,res,next)=>{
   if(!categoryExist){
    return next(new AppError(messages.category.notfound,404))
   }
-  const nameExist=await Category.findOne({name})
+  const nameExist=await Category.findOne({name,_id:{$ne:categoryId}})
   if(nameExist){
    return next(new AppError(messages.category.alreadyExist,409))
   }
@@ -61,13 +62,31 @@ export const updateCategory=async(req,res,next)=>{
    categoryExist.name=name
    categoryExist.slug=slugify(name)
   }
-//update name
+//update name using file
+//if(req.file){
+  // deleteFile(categoryExist.image.path)
+   //categoryExist.image.path=req.file.path
+//}
+//update  using cloud
 if(req.file){
-   deleteFile(categoryExist.image.path)
-   categoryExist.image.path=req.file.path
-}
+const{secure_url,public_id}=await cloudinary.uploader.upload(req.file.path,{
+   //over ride
+   public_id:categoryExist.image.public_id}
+)
+categoryExist.image={public_id,secure_url}
+ req.failImage={secure_url,public_id}}
 //update
 const updateCategory=categoryExist.save()
 if(!updateCategory){return next(new AppError(messages.category.failToUpdate,500))}
 return res.status(200).json({message:messages.category.updateCategory,success:true})
 }
+//delete
+export const deleteCategory=async(req,res,next)=>{
+   //get data
+   const {categoryId}=req.params
+   const deletedCategory=await Category.findByIdAndDelete(categoryId)
+   if (!deletedCategory) {
+      return res.status(404).json({ message: 'Category not found' });
+  }
+  return res.status(200).json({ message: 'Category deleted successfully', category: deletedCategory });
+} 

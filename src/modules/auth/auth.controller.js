@@ -17,10 +17,8 @@ password=bcrypt.hashSync(password,8)
 const user=new User({
     name
     ,email
-    ,password
-    ,
-    phone   
-})
+    ,password ,
+    phone   })
 //add to db
 const createdUser=await user.save()
 if(!createdUser){
@@ -37,8 +35,8 @@ export const verifyAccount=async(req,res,next)=>{
     //get data
     const {token}=req.params
     const payload=verifyToken({token})
-    await User.findOneAndUpdate({email:payload.email,status:"pending"},{status:"verified"})
-    await Cart.create({user:payload._id,products:[]})
+    await User.findOneAndUpdate({email:payload.email,status:"pending"},{status:"verified"},{new:true})
+   await Cart.create({user:payload._id,products:[]})
     return res.status(200).json({message:messages.user.verified,success:true})
 }
 export const login=async(req,res,next)=>{
@@ -58,3 +56,4 @@ export const login=async(req,res,next)=>{
     return res.status(200).json({message:"login successfully",success:true,token})
         //data:userExist})
 }
+//"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2UwNmU0MzZkZDk2YTVlNzU1MWVkMGQiLCJlbWFpbCI6ImF5YXRhYmRlbHJobWFuNTE0QGdtYWlsLmNvbSIsImlhdCI6MTc0Mjc2MTYzOX0.7VbkD0BvllzPJESgd--ee_f8qI74VSxKUoZ8kph5JeU"

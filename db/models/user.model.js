@@ -39,7 +39,7 @@ const userSchema=new Schema({
         secure_url:{type:String,required:false},
         public_id:{type:String,required:false}
     },
-    DOB:{type:String,default:Date.now()},
+    //DOB:{type:String,default:Date.now()},
     wishList:[{type:Schema.Types.ObjectId,ref:'Product'}]
 },{timestamps:true})
 export const User=model('User',userSchema)

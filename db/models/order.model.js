@@ -5,15 +5,18 @@ const orderSchema=new Schema({
 user:{type:Schema.Types.ObjectId,ref:"User"},
 products:[
     {
-        productId:{type:Schema.Types.ObjectId,ref:"Product"},
-name:String,
+        productId:{
+            type:Schema.Types.ObjectId,ref:"Product"
+        },
 finalPrice:Number,
-itemPrice:Number,
-quantity:Number
-
+price:Number,
+name:String,
+quantity:Number,
+discount:Number
 }],
-address:{type:String,required:true},
-phone:{type:String,required:true},
+address:{phone:String,
+    street:String
+},
 coupon:{
     couponId:{type:Schema.Types.ObjectId,ref:"Coupon"},
     code:String,

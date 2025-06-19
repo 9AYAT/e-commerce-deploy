@@ -8,7 +8,7 @@ export const isAuthenticated=()=>{
     //token
     const{token} =req.headers
      //decoded token
-   const payload=  verifyToken({token})
+   const payload= verifyToken({token})
    if(payload.message){
     return next(new AppError(payload.message,401))
    }
