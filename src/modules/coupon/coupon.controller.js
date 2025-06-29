@@ -2,7 +2,6 @@ import { Coupon } from "../../../db/index.js"
 import { AppError } from "../../utils/appError.js"
 import { discountTypes } from "../../utils/constant/enum.js"
 import { messages } from "../../utils/constant/message.js"
-
 export const addCupon=async(req,res,next)=>{
     const{code,discountAmount,discountType,toDate,fromDate}=req.body
     const userId=req.authUser._id

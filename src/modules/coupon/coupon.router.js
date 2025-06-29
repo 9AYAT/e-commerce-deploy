@@ -11,7 +11,7 @@ const couponRouter=Router()
 
 
 //add coupon
-couponRouter.post('/',isAuthenticated(),isAuthorized([roles.ADMIN]),
+couponRouter.post('/',isAuthenticated(),isAuthorized([roles.ADMIN,roles.USER]),
 isvalid(addCuponVal),
 asynchandler(addCupon))
 export default couponRouter

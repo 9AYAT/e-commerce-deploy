@@ -20,7 +20,7 @@ export const addReview=async(req,res,next)=>{
             comment,rate,
             isVerified:false//todo true if has any orders
             })
-  const createdReview= await reviews.save()
+  const createdReview= await review.save()
   if(!createdReview){
     return next(new AppError(messages.review.failToCreate))
   }
@@ -44,3 +44,53 @@ export const addReview=async(req,res,next)=>{
     data
   })
 }
+//. Get All Reviews for a Product
+export const getAllReview=async(req,res,next)=>{
+  const{productId}=req.params
+  //check product
+   const product = await Product.findById(productId);
+    if (!product) {
+      return next(new AppError(messages.product.notfound, 404));
+    }
+     const reviews = await Review.find({ product: productId });
+    return res.status(200).json({
+      success: true,
+      message: messages.review.getsuccess,
+      results: reviews.length,
+      data: reviews,
+    });  }
+    //delete
+    export const deleteReview = async (req, res, next) => {
+      //get data
+    const { reviewId } = req.params;
+    const userId = req.authUser._id;
+     //check exist
+    const review = await Review.findById(reviewId);
+    if (!review) {
+      return next(new AppError(messages.review.notfound, 404));
+    }
+    // check to make the user who make review delete it
+    if (review.user.toString() !== userId.toString()) {
+      return next(new AppError(messages.user.notfound, 403));
+    }
+//delete review
+    await Review.findByIdAndDelete(reviewId);
+
+    // update rate after delete
+        const reviews = await Review.find({ product: review.product });
+    let finalRate = 0;
+    if (reviews.length > 0) {
+      finalRate = reviews.reduce((acc, cur) => acc + cur.rate, 0) / reviews.length;
+    }
+
+    const productExist = await Product.findById(review.product);
+    if (productExist) {
+      await Product.findByIdAndUpdate(review.product, { rate: finalRate });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: messages.review.deletesuccess,
+    });
+
+};

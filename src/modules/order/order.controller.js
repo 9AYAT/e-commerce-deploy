@@ -1,4 +1,4 @@
-import Stripe from "stripe";
+import Stripe from "stripe";//class
 import { Cart, Coupon, Order, Product } from "../../../db/index.js";
 import { AppError } from "../../utils/appError.js";
 import { discountTypes } from "../../utils/constant/enum.js";
@@ -36,13 +36,13 @@ export const createOrder=async(req,res,next)=>{
         productId:productExist._id,
         price:productExist.price,
         finalPrice:productExist.finalPrice,
-        quantity:productExist.quantity,
+        quantity:product.quantity,
         discount:productExist.discount,
         name:productExist.name
       })
-      couponExist.discountType==discountTypes.FIXED_AMOUNT?
-      finalPrice=orderPrice-couponExist.discount
-      :finalPrice=orderPrice-(orderPrice*((couponExist.discount||0)/100))
+      couponExist.discountType==discountTypes.FIXED_AMOUNT
+      ? finalPrice=orderPrice-couponExist.discountAmount
+      :finalPrice=orderPrice-(orderPrice*((couponExist.discountAmount||0)/100))}
     //prepare order
     const order=new Order({
         user:req.authUser._id,
@@ -55,7 +55,7 @@ export const createOrder=async(req,res,next)=>{
         orderPrice,
         finalPrice
     })
-const createOrder=await Order.save();
+const createOrder=await order.save();
 if(!createOrder){
     return next(new AppError(messages.order.failToCreate,500))
 }
@@ -90,4 +90,4 @@ if(paymentMethod=='visa'){
 return res.status(201).json({message:messages.order.createsuccessfully,
     success:true,
     data:createOrder
-})}}
+})}

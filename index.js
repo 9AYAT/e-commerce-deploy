@@ -9,7 +9,7 @@ const app=express()
 dotenv.config({path:path.resolve('./config/.env')})//env for os
 connectDB()
 initApp(app,express)
-const port=3000;
+const port=process.env.port || 3000
 app.listen(port,()=>{
     console.log('server is running on',port)
 })

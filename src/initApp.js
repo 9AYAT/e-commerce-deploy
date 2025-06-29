@@ -1,7 +1,8 @@
 //import categoryRouter from "./modules/category/category.router.js"
 import { globalErrorHandling } from "./middleware/asynchandler.js"
 import { authRouter, brandRouter, cartRouter, categoryRouter
-    , couponRouter, orderRouter, productRouter, reviewRouter, subcategoryRouter } from "./modules/index.js"
+    , couponRouter, orderRouter, productRouter, reviewRouter, subcategoryRouter, 
+    wishlistRouter} from "./modules/index.js"
 //import { globalErrorHandling } from "./utils/appError.js"
  export const initApp=(app,express)=>{
 //parse req
@@ -18,6 +19,7 @@ import { authRouter, brandRouter, cartRouter, categoryRouter
     app.use('/coupon',couponRouter)
     app.use('/cart',cartRouter)
     app.use('/order',orderRouter)
+    app.use('/wishlist',wishlistRouter)
     app.use(globalErrorHandling)
     app.use('*',(req,res,next)=>{ return res.json({message:"invalid url"})})
  }                                                           
