@@ -21,6 +21,6 @@ import { authRouter, brandRouter, cartRouter, categoryRouter
     app.use('/order',orderRouter)
     app.use('/wishlist',wishlistRouter)
     app.use(globalErrorHandling)
-    app.use('*',(req,res,next)=>{ return res.json({message:"invalid url"})})
+    app.use('/',(req,res,next)=>{ return res.json({message:"invalid url"})})
  }                                                           
 //src
