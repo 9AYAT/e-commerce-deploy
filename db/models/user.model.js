@@ -41,5 +41,9 @@ const userSchema=new Schema({
     },
     //DOB:{type:String,default:Date.now()},
     wishList:[{type:Schema.Types.ObjectId,ref:'Product'}]
+    ,  isDeleted:{
+        type:Boolean,
+        default:false
+    },
 },{timestamps:true})
 export const User=model('User',userSchema)

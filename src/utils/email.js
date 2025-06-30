@@ -5,7 +5,7 @@ const transporter=nodemailer.createTransport({
     auth:{
         user:"ayatabdelrhman514@gmail.com",
         //pass:"wsju cviy qexx vvvf"
-        pass:"podh rgjc koxl tuiu"
+        pass:"xovf krwy oupx zhxh"
     }
 })
 await transporter.sendMail({
