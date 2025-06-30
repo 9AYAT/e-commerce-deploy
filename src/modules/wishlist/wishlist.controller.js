@@ -27,7 +27,3 @@ export const deleteFromWishlist=async(req,res,next)=>{
     });
 }
 //get logged user wishlist
-export const getWishlist=async(req,res,next)=>{
-  const user=await User.findById(req.authUser._id,{wishList:1},{populate:[{path:"wishlist"}]})
-  return res.status(200).json({data:user})
-}
