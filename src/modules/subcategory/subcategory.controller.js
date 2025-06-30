@@ -32,15 +32,16 @@ export const addSubCategory=async(req,res,next)=>{
    const createdsubcat= await subcategory.save()
    if(!createdsubcat){
     req.failImage={secure_url,public_id}
-    return next(new AppError(messages.subcategory.failToCreate,500))
-   }
+    return next(new AppError(messages.subcategory.failToCreate,500))}
    //return res
    res.status(201).json({messages:messages.subcategory.createsuccessfully, success:true, data:createdsubcat})}
+
    //get subcategories
    export const getAllSubcategories=async(req,res,next)=>{
     const subcategories=await Subcategory.find().populate('category')
     return res.status(201).json({status:true,data:subcategories})
    }
+   
 //update subcategory
 export const updateSubcategory=async(req,res,next)=>{
 const {name}=req.body
