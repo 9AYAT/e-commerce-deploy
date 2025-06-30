@@ -14,16 +14,16 @@ import { authRouter, brandRouter, cartRouter, categoryRouter
         const payload = req.body;
         const sig = req.headers['stripe-signature'].toString();
         const stripe = new Stripe(process.env.STRIPE_KEY)
-        let event = stripe.webhooks.constructEvent(payload, sig, '');
+        let event = stripe.webhooks.constructEvent(payload, sig, process.env.STRIPE_WEBHOOK_SECRET);
         if (
           event.type === 'checkout.session.completed'
           || event.type === 'checkout.session.async_payment_succeeded'
         ) {
             const checkout = event.data.object;
-            const orderId = checkout.metaData.orderId;
-            const cartId = checkout.metadata.cartId;
+            const orderId = checkout.metadata.orderId;
+           // const cartId = checkout.metadata.cartId;
             // clear cart
-            await Cart.findByIdAndUpdate(cartId,{products:[]})
+           // await Cart.findByIdAndUpdate(cartId,{products:[]})
             // update order status
             const orderExist = await Order.findByIdAndUpdate(orderId, {status:'Placed'},{new:true})
             await Cart.findOneAndUpdate({user:orderExist.user}, {products: []},{new:true})
