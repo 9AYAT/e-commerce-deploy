@@ -51,6 +51,9 @@ export const login=async(req,res,next)=>{
     if(!match){
         return next(new AppError(messages.user.invalidCredentials,400))
     }
+    //updaate is deleted
+    userExist.isDeleted=false
+    await userExist.save()
     //generate token
     const token=generateToken({payload:{_id:userExist._id,email}})
     return res.status(200).json({message:"login successfully",success:true,token})

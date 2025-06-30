@@ -8,6 +8,7 @@ import couponRouter from "./coupon/coupon.router.js"
 import wishlistRouter from "./wishlist/wishlist.router.js"
 import cartRouter from "./cart/cart.router.js"
 import orderRouter from "./order/order.router.js"
-export { authRouter, brandRouter, categoryRouter, productRouter, reviewRouter, subcategoryRouter,orderRouter,couponRouter,wishlistRouter,cartRouter}
+import userRouter from "./user/user.router.js"
+export { authRouter, brandRouter,userRouter, categoryRouter, productRouter, reviewRouter, subcategoryRouter,orderRouter,couponRouter,wishlistRouter,cartRouter}
 
 //shif alt o
