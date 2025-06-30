@@ -17,7 +17,7 @@ isAuthorized([roles.ADMIN,roles.USER
 ]),
     cloudUpload({folder:'subcategory'}).single('image'),
 isvalid(addSubCategoryval),asynchandler(addSubCategory))
-export default subcategoryRouter
+
 //get subcategories
 subcategoryRouter.get('/',asynchandler(getAllSubcategories))
 //update subcategory 
@@ -28,3 +28,4 @@ subcategoryRouter.put('/:subcategoryId',isAuthenticated(),isAuthorized([roles.AD
  subcategoryRouter.delete('/:subcategoryId',isAuthenticated(),
  isAuthorized([roles.ADMIN,roles.USER]),isvalid(deleteSubCategoryVal),asynchandler(deleteSubcategory)
  )
+ export default subcategoryRouter
