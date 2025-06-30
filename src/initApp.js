@@ -9,7 +9,7 @@ import { authRouter, brandRouter, cartRouter, categoryRouter
 //import { globalErrorHandling } from "./utils/appError.js"
  export const initApp=(app,express)=>{
 //parse req
-    app.use(express.json())
+    
      app.post('/webhook', bodyParser.raw({type: 'application/json'}), asynchandler(async (req, res) => {
         const payload = req.body;
         const sig = req.headers['stripe-signature'].toString();
@@ -26,7 +26,7 @@ import { authRouter, brandRouter, cartRouter, categoryRouter
             await Cart.findByIdAndUpdate(cartId,{products:[]})
             // update order status
             const orderExist = await Order.findByIdAndUpdate(orderId, {status:'Placed'},{new:true})
-            await Cart.findOneAndUpdate({usee:orderExist.user}, {products: []},{new:true})
+            await Cart.findOneAndUpdate({user:orderExist.user}, {products: []},{new:true})
             for (const product of orderExist.products) {
                 await Product.findByIdAndUpdate(product.productId , {$inc:{stock: -product.quantity}})
             }
@@ -34,6 +34,7 @@ import { authRouter, brandRouter, cartRouter, categoryRouter
     
         res.status(200).end();
       }));
+      app.use(express.json())
     //routing
     app.use('/category',categoryRouter)
     app.use('/uploads',express.static('uploads'))
